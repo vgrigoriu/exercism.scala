@@ -1,15 +1,14 @@
 case class Robot(bearing: Bearing.Val, coordinates: (Int, Int)) {
   def turnRight: Robot = Robot(bearing.turnRight, coordinates)
   def turnLeft: Robot = Robot(bearing.turnLeft, coordinates)
-  def advance: Robot = coordinates match {
-    case (x, y) => Robot(bearing, (x + bearing.dx, y + bearing.dy))
-  }
+  def advance: Robot = Robot(bearing, bearing.advance(coordinates))
   def simulate(instructions: String): Robot = instructions.foldLeft(this) {
-    (acc, i) => i match {
-      case 'L' => acc.turnLeft
-      case 'R' => acc.turnRight
-      case 'A' => acc.advance
-    }
+    (acc, i) =>
+      i match {
+        case 'L' => acc.turnLeft
+        case 'R' => acc.turnRight
+        case 'A' => acc.advance
+      }
   }
 }
 
@@ -27,10 +26,13 @@ object Bearing extends Enumeration {
       case South => East
       case East  => North
     }
+    def advance(coordinates: (Int, Int)): (Int, Int) = coordinates match {
+      case (x, y) => (x + dx, y + dy)
+    }
   }
 
   val North = Val(0, 1)
-  val East  = Val(1, 0)
+  val East = Val(1, 0)
   val South = Val(0, -1)
-  val West  = Val(-1, 0)
+  val West = Val(-1, 0)
 }
