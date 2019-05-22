@@ -4,7 +4,7 @@ object BookStore {
   private val cache = mutable.Map[List[Int], Int]()
 
   private val discount =
-    Map(0 -> 100, 1 -> 100, 2 -> 95, 3 -> 90, 4 -> 80, 5 -> 75)
+    Map(1 -> 100, 2 -> 95, 3 -> 90, 4 -> 80, 5 -> 75)
 
   def total(books: List[Int]): Int =
     cache.getOrElseUpdate(books, getTotal(books))
